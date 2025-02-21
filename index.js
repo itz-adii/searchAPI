@@ -6,7 +6,7 @@ const CX_ID = process.env.CX_ID;
 let query = "aadhar card india";
 
 const search_url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX_ID}&q=${query}`;
-const urlsArray = [];
+let urlsArray = [];
 
 axios
   .get(search_url)
@@ -16,6 +16,11 @@ axios
     response.data.items.forEach((item) => urlsArray.push(item.link));
 
     console.log("Retrieved URLs:", urlsArray);
+
+    // urlsArray =
+    console.log("\n\n-------------------------------------------------------");
+    urlsArray = getUniqueDomains(urlsArray);
+    console.log("After removing duplicates...");
 
     return checkWebsites(urlsArray);
   })
@@ -53,6 +58,22 @@ axios
       error.response ? error.response.data : error.message
     );
   });
+
+function getUniqueDomains(urls) {
+  const uniqueDomains = new Set();
+  return urls.filter((url) => {
+    try {
+      let domain = new URL(url).hostname; // Extracts the domain
+      if (!uniqueDomains.has(domain)) {
+        uniqueDomains.add(domain);
+        return true; // Keep only the first occurrence of a domain
+      }
+    } catch (error) {
+      console.error("Invalid URL:", url);
+    }
+    return false;
+  });
+}
 
 function isGovWebsite(url) {
   try {
