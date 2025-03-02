@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const API_KEY = process.env.API_KEY;
 const CX_ID = process.env.CX_ID;
-let query = "aadhar card india";
+let query = "Passport india apply";
 
 const search_url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX_ID}&q=${query}`;
 let urlsArray = [];
@@ -20,7 +20,7 @@ axios
     // urlsArray =
     console.log("\n\n-------------------------------------------------------");
     urlsArray = getUniqueDomains(urlsArray);
-    console.log("After removing duplicates...");
+    console.log("After removing duplicates...", urlsArray);
 
     return checkWebsites(urlsArray);
   })
